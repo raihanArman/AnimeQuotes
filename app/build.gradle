@@ -35,7 +35,7 @@ android {
     productFlavors {
         production {
             dimension = 'version'
-            buildConfigField("String", "BASE_URL", "\"https://api.quotable.io/\"")
+            buildConfigField("String", "BASE_URL", "\"https://api.rei.my.id/v3/\"")
         }
     }
 
