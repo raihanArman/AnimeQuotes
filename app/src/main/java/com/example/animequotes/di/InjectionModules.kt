@@ -9,6 +9,7 @@ import com.example.animequotes.di.NetworkModule.network
 import com.example.animequotes.domain.repository.QuoteRepository
 import com.example.animequotes.domain.usecase.GetRandomQuoteUseCase
 import com.example.animequotes.ui.home.HomeViewModel
+import kotlinx.coroutines.Dispatchers
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.dsl.module
@@ -29,11 +30,11 @@ object InjectionModules {
     }
 
     private val useCases = module {
-        single { GetRandomQuoteUseCase(get(), get()) }
+        single { GetRandomQuoteUseCase(get(), dispatcher = Dispatchers.IO) }
     }
 
     private val viewModels = module {
-        viewModelOf(::HomeViewModel)
+        single { HomeViewModel(get()) }
     }
 
 }

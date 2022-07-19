@@ -30,6 +30,11 @@ abstract class BaseActivity<B: ViewBinding, VM: ViewModel>(
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        onRetrieveIntentData(intent.extras)
+        binding = bindingFactory(layoutInflater)
+        setContentView(binding.root)
+        initView()
+        observeData()
     }
 
     abstract fun initView()

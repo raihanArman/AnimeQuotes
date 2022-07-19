@@ -7,7 +7,8 @@ import com.example.animequotes.base.arch.BaseViewModel
 import com.example.animequotes.base.wrapper.ViewResource
 import com.example.animequotes.domain.usecase.GetRandomQuoteUseCase
 import com.example.animequotes.domain.viewparams.Quote
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 /**
@@ -18,6 +19,9 @@ class HomeViewModel(
     private val getRandomQuoteUseCase: GetRandomQuoteUseCase
 ): BaseViewModel() {
 
+    private val homeEventChannel = Channel<HomeEvent>()
+    val homeEvent = homeEventChannel.receiveAsFlow()
+
     val observeQuote: LiveData<ViewResource<Quote>>
         get() = _observeQuote
     private val _observeQuote = MutableLiveData<ViewResource<Quote>>()
@@ -25,11 +29,22 @@ class HomeViewModel(
     var cardColor = "#546E7A"
     var currentQuote : Quote? = null
 
+    private suspend fun getData(){
+        getRandomQuoteUseCase().collect {
+            _observeQuote.value = it
+        }
+    }
+
     fun getRandomQuote(){
         viewModelScope.launch {
-            getRandomQuoteUseCase().collect {
-                _observeQuote.value = it
-            }
+            getData()
+        }
+    }
+
+    fun onRefreshData(){
+        viewModelScope.launch {
+            getData()
+            homeEventChannel.send(HomeEvent.RefreshData("Refresh data"))
         }
     }
 
