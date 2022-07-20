@@ -13,5 +13,6 @@ data class Quote(
     val anime: String,
     val id: Int,
     val name: String,
-    val quote: String
+    val quote: String,
+    var isFavorite: Boolean = false
 ): Parcelable

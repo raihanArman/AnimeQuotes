@@ -3,7 +3,8 @@ package com.example.animequotes.base.arch
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
 import com.example.animequotes.R
@@ -11,30 +12,25 @@ import com.example.animequotes.base.exception.ApiErrorException
 import com.example.animequotes.base.exception.NoInternetConnectionException
 import com.example.animequotes.base.wrapper.ViewResource
 import com.example.animequotes.util.ext.toast
-import kotlin.Exception
 
 /**
  * @author Raihan Arman
- * @date 14/07/2022
+ * @date 20/07/2022
  */
-abstract class BaseActivity<B: ViewBinding, VM: BaseViewModel>(
+abstract class BaseFragment<B: ViewBinding, VM: BaseViewModel>(
     val bindingFactory: (LayoutInflater) -> B
-): AppCompatActivity(), BaseContract.BaseView {
+): Fragment(), BaseContract.BaseView {
 
     protected lateinit var binding: B
-    protected abstract val viewModel: VM?
+    protected abstract val viewModel: VM
 
-    open fun onRetrieveIntentData(extra: Bundle?){
-
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        onRetrieveIntentData(intent.extras)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         binding = bindingFactory(layoutInflater)
-        setContentView(binding.root)
-        initView()
-        observeData()
+        return binding.root
     }
 
     abstract fun initView()
@@ -102,13 +98,5 @@ abstract class BaseActivity<B: ViewBinding, VM: BaseViewModel>(
         showEmptyData(false)
     }
 
-    fun enableHomeAsBack() {
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
-        return super.onSupportNavigateUp()
-    }
 
 }

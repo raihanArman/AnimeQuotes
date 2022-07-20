@@ -9,6 +9,5 @@ import com.example.animequotes.domain.viewparams.Quote
 sealed class HomeEvent{
     object NavigateToFavorite: HomeEvent()
     data class RefreshData(val message: String): HomeEvent()
-    data class AddFavoriteAction(val quote: Quote): HomeEvent()
     data class ShareQuoteAction(val quote: Quote): HomeEvent()
 }
