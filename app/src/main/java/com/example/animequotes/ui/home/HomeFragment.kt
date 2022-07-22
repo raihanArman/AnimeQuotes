@@ -19,10 +19,10 @@ import com.example.animequotes.util.ext.createRoundedBackground
 import com.example.animequotes.util.ext.toast
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(
+class HomeFragment : BaseFragment<FragmentHomeBinding>(
     FragmentHomeBinding::inflate
 ) {
-    override val viewModel: HomeViewModel by viewModel()
+    val viewModel: HomeViewModel by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

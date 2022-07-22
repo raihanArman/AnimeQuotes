@@ -17,12 +17,11 @@ import com.example.animequotes.util.ext.toast
  * @author Raihan Arman
  * @date 20/07/2022
  */
-abstract class BaseFragment<B: ViewBinding, VM: BaseViewModel>(
+abstract class BaseFragment<B: ViewBinding>(
     val bindingFactory: (LayoutInflater) -> B
 ): Fragment(), BaseContract.BaseView {
 
     protected lateinit var binding: B
-    protected abstract val viewModel: VM
 
     override fun onCreateView(
         inflater: LayoutInflater,

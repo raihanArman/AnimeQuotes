@@ -15,6 +15,18 @@ import com.example.animequotes.domain.viewparams.Quote
 class FavoriteAdapter(
     private val itemClick: (Quote) -> Unit
 ): ListAdapter<Quote, FavoriteAdapter.QuoteViewHolder>(DiffCallback()) {
+
+    fun addItems(items: List<Quote>) {
+        currentList.addAll(items)
+        notifyDataSetChanged()
+    }
+
+    fun removeItem (position: Int){
+        val currentList =  currentList.toMutableList()
+        currentList.removeAt(position)
+        submitList(currentList)
+    }
+
     inner class QuoteViewHolder(
         private val binding: ItemQuoteBinding) :
         RecyclerView.ViewHolder(binding.root) {
