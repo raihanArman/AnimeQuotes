@@ -4,6 +4,7 @@ import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.example.animequotes.BuildConfig
 import com.example.animequotes.data.network.model.QuoteResponse
 import okhttp3.OkHttpClient
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
@@ -15,5 +16,5 @@ import java.util.concurrent.TimeUnit
  */
 interface QuoteApiService {
     @GET("quotes")
-    suspend fun getRandomQuotes(): QuoteResponse
+    suspend fun getRandomQuotes(): Response<QuoteResponse>
 }

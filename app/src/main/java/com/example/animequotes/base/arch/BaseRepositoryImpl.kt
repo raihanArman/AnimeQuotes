@@ -7,6 +7,7 @@ import com.example.animequotes.base.exception.NoInternetConnectionException
 import com.example.animequotes.base.exception.UnexpectedApiErrorException
 import com.example.animequotes.base.wrapper.DataResource
 import retrofit2.HttpException
+import retrofit2.Response
 import java.io.IOException
 import java.lang.Exception
 
@@ -21,9 +22,14 @@ open class BaseRepositoryImpl: BaseContract.BaseRepository {
         }
     }
 
-    suspend fun <T> safeNetwrokCall(apiCall: suspend () -> T): DataResource<T>{
+    suspend fun <T> safeNetwrokCall(apiCall: suspend () -> Response<T>): DataResource<T>{
         return try {
-            DataResource.Success(apiCall.invoke())
+            val call = apiCall.invoke()
+            if(call.isSuccessful && call.body() != null){
+                DataResource.Success(call.body()!!)
+            }else{
+                DataResource.Error(ApiErrorException(call.errorBody().toString(), 0))
+            }
         }catch (throwable: Throwable){
             when(throwable){
                 is IOException -> DataResource.Error(NoInternetConnectionException())

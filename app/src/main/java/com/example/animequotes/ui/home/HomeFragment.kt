@@ -16,7 +16,11 @@ import com.example.animequotes.base.wrapper.ViewResource
 import com.example.animequotes.databinding.FragmentHomeBinding
 import com.example.animequotes.domain.viewparams.Quote
 import com.example.animequotes.util.ext.createRoundedBackground
+import com.example.animequotes.util.ext.toImageBitmap
 import com.example.animequotes.util.ext.toast
+import com.github.dhaval2404.colorpicker.MaterialColorPickerDialog
+import com.github.dhaval2404.colorpicker.model.ColorShape
+import com.github.dhaval2404.colorpicker.model.ColorSwatch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(
@@ -39,7 +43,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
         binding.btnRefreshQuotes.setOnClickListener { viewModel.onRefreshData() }
         binding.ivFavoriteList.setOnClickListener { viewModel.onNavigateToFavorite() }
         binding.btnFavoriteQuotes.setOnClickListener { viewModel.addFavoriteQuote() }
-
+        binding.btnRefreshQuotes.setOnClickListener {
+            val bitmap = binding.clQuoteContainer.toImageBitmap()
+            viewModel.onShareQuote(bitmap, requireActivity())
+        }
+        binding.clQuoteContainer.setOnClickListener {
+            showColorPickerDialog()
+        }
     }
 
     override fun observeData() {
@@ -98,5 +108,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
             setBackgroundCardColor(viewModel.cardColor)
         }
     }
+
+    private fun showColorPickerDialog() {
+        MaterialColorPickerDialog
+            .Builder(requireActivity())
+            .setTitle(getString(R.string.text_color_picker_title))
+            .setColorShape(ColorShape.SQAURE)
+            .setColorSwatch(ColorSwatch._300)
+            .setDefaultColor(viewModel.cardColor)
+            .setColorListener { _, colorHex ->
+                viewModel.cardColor = colorHex
+                setBackgroundCardColor(viewModel.cardColor)
+            }
+            .show()
+    }
+
 
 }

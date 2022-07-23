@@ -2,6 +2,7 @@ package com.example.animequotes.data.network.datasource
 
 import com.example.animequotes.data.network.QuoteApiService
 import com.example.animequotes.data.network.model.QuoteResponse
+import retrofit2.Response
 
 /**
  * @author Raihan Arman
@@ -10,11 +11,11 @@ import com.example.animequotes.data.network.model.QuoteResponse
 class QuoteNetworkDataSourceImpl(
     private val apiService: QuoteApiService
 ): QuoteNetworkDataSource {
-    override suspend fun getRandomQuote(): QuoteResponse {
+    override suspend fun getRandomQuote(): Response<QuoteResponse> {
         return apiService.getRandomQuotes()
     }
 }
 
 interface QuoteNetworkDataSource{
-    suspend fun getRandomQuote():QuoteResponse
+    suspend fun getRandomQuote():Response<QuoteResponse>
 }

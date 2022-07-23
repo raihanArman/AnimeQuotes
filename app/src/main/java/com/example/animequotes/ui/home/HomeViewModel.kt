@@ -1,5 +1,7 @@
 package com.example.animequotes.ui.home
 
+import android.content.Context
+import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -8,6 +10,8 @@ import com.example.animequotes.base.wrapper.ViewResource
 import com.example.animequotes.domain.usecase.AddFavoriteQuoteUseCase
 import com.example.animequotes.domain.usecase.GetRandomQuoteUseCase
 import com.example.animequotes.domain.viewparams.Quote
+import com.example.animequotes.util.IntentUtils
+import com.example.animequotes.util.ext.bitmapToCacheUri
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -67,6 +71,13 @@ class HomeViewModel(
                     }
                 }
             }
+        }
+    }
+
+    fun onShareQuote(bitmapQuote: Bitmap?, context: Context){
+        val bitmapUri = bitmapQuote.bitmapToCacheUri(context)
+        bitmapUri?.let {uri ->
+            IntentUtils.shareImage(context, uri)
         }
     }
 
